@@ -3,6 +3,8 @@ import img1 from '../assets/top-left-elips.png';
 import img2 from '../assets/bottom-right-elips.png';
 import todos from "./todos";
 import Todo from './Components/Todo';
+const uuidv1 = require('uuid/v1');
+
 
 console.log(todos);
 
@@ -31,23 +33,39 @@ alt="background"
 
 
 window.addEventListener("DOMContentLoaded", render(todos));
+document.addEventListener('keydown', addTask);
+ 
+function addTask(e){
+  const newTask = document.querySelector("#todoInput").value;
+  console.log(newTask)
+  if (newTask != "" && e.key == "Enter"){
+    const newTodos = [...todos, {text: newTask, created:"Wed Jan 22 2020 07:03:0", completed: false}];
+    render(newTodos);
+  }
+};
+
+
 
 function render(todos) {
+  
+  const tds = [...todos];
 
- const tds = [...todos];
+  let objectArrayWithId = tds.map(item => ({...item, id:uuidv1()}))
 
- const handleCloseClick = e => {
-  //console.log(e.target.dataset);
-    render(tds.filter(c => e.target.dataset.outerItem != c.id));
- };
+  console.log(objectArrayWithId);
 
- document.querySelector("#app").innerHTML = view;
- let htmlList = todos.map(item => Todo(item.text, item.id));
- 
- document.querySelector(".list").innerHTML = htmlList.join("");
- 
- document
- .querySelectorAll(".close")
- .forEach(e => e.addEventListener("click", handleCloseClick));
+  const handleCloseClick = e => {
+    //console.log(e.target.dataset);
+    render(objectArrayWithId.filter(c => e.target.dataset.outerItem != c.id));
+  };
+  
+  document.querySelector("#app").innerHTML = view;
+  let htmlList = objectArrayWithId.map(item => Todo(item.text, item.id));
+  
+  document.querySelector(".list").innerHTML = htmlList.join("");
+  
+  document
+  .querySelectorAll(".close")
+  .forEach(e => e.addEventListener("click", handleCloseClick));
 }
 
