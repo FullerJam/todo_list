@@ -37,8 +37,8 @@ function render(todos) {
  const tds = [...todos];
 
  const handleCloseClick = e => {
- 
-    render(tds.filter(c => e.target.dataset.outerItemId != c.id));
+  //console.log(e.target.dataset);
+    render(tds.filter(c => e.target.dataset.outerItem != c.id));
  };
 
  document.querySelector("#app").innerHTML = view;
@@ -51,14 +51,3 @@ function render(todos) {
  .forEach(e => e.addEventListener("click", handleCloseClick));
 }
 
-
-// function render() {
-//     console.log('ready');
-//     const div = document.querySelector('#app');
-//     div.innerHTML = view
-
-//     let htmlList = todos.map((item) => Todo(item.text, item.id)).join('');
-//     document.querySelector('.list').innerHTML = htmlList;
-// }
-
-// window.addEventListener('DOMContentLoaded', render);
